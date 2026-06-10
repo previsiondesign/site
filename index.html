@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prevision Design | Site Under Construction</title>
+  <meta name="description" content="The new Prevision Design website is under construction.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Autumn palette: navy 07111D / slate 39444D / gray 5D5D5D /
+       off-white E5E5DF / amber DB9941 / rust AE2C11.
+       Type: Inter (matches the "Type — Business" direction).
+       Self-contained — no external assets; safe to deploy as a single file. */
+    :root {
+      --navy: #07111D;
+      --slate: #39444D;
+      --gray: #5D5D5D;
+      --pale: #E5E5DF;
+      --amber: #DB9941;
+      --amber-dark: #C98A33;
+      --amber-light: #E8B46E;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #c6c5be 0%, #d9d8d2 40%, #cfcec7 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--gray);
+    }
+
+    .card {
+      background: var(--white);
+      max-width: 480px;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 30px 90px rgba(7, 17, 29, 0.25);
+      padding: 64px 56px 48px;
+      text-align: center;
+    }
+
+    .lockup {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 17.6px;
+      margin-bottom: 54px;
+    }
+
+    .lockup svg {
+      height: 73.6px;
+      width: auto;
+      /* center the P box, not the art bounds — the cast shadow extends left.
+         See ALIGNMENT NOTE in shared/images/prevision_icon.svg */
+      transform: translateX(-12.9%);
+    }
+
+    .lockup .name {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .lockup .name .vis { font-weight: 600; }
+
+    h1 {
+      font-size: 33px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--slate);
+      margin-bottom: 18px;
+    }
+
+    .lede {
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto 32px;
+    }
+
+    /* subtle "in progress" shimmer bar */
+    .progress {
+      position: relative;
+      width: 200px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--pale);
+      margin: 0 auto 36px;
+      overflow: hidden;
+    }
+
+    .progress::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 40%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--amber), var(--amber-light));
+      animation: slide 2.4s ease-in-out infinite;
+    }
+
+    @keyframes slide {
+      0%   { left: -40%; }
+      55%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 4px;
+      background: var(--amber);
+      color: var(--white);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn:hover { background: var(--amber-dark); transform: translateY(-1px); }
+
+    .meta {
+      border-top: 1px solid var(--pale);
+      margin-top: 44px;
+      padding-top: 22px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .meta .firm {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--slate);
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 44px 28px 36px; }
+      h1 { font-size: 26px; }
+      .lockup { gap: 13px; }
+      .lockup svg { height: 58px; }
+      .lockup .name { font-size: 16px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <main class="card">
+    <div class="lockup">
+      <svg role="img" aria-label="Prevision Design icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 236.49 188.05">
+        <path fill="#6fb9d8" d="M217.09,187.68c-18.88-2.26-37.76-4.53-56.64-6.79C106.97,157.43,53.48,133.97,0,110.51c23.76-8.08,37.41-15.23,61.17-23.31v33.16l155.91,67.31"/>
+        <polygon fill="#231f20" points="218.72 94.3 61.17 26.78 61.17 120.36 218.72 187.88 218.72 94.3"/>
+        <polygon fill="#808285" points="236.49 87.2 218.72 94.46 218.72 188.05 236.49 177.88 236.49 87.2"/>
+        <polygon fill="#fff" points="64.77 26.96 145.7 1.32 221.27 29.24 155.8 54.71 233.18 87.17 218.73 92.95 64.77 26.96"/>
+        <path fill="#fff" d="M145.73,0L61.17,26.78l157.55,67.52,17.77-7.11-77.35-32.44,65.66-25.55L145.73,0ZM145.67,2.65l72.07,26.62-59.5,23.16-5.78,2.25,5.71,2.4,71.71,30.07-11.13,4.45L68.36,27.14,145.67,2.65Z"/>
+        <path fill="#231f20" d="M192.62,31.92l-41.66,16.1c-.43.16-3.08.97-5.59.15l-47.14-19.53c-1.53-.64-1.44-2.84.14-3.34l46.4-14.66c.38-.12.8-.11,1.17.04l46.67,17.92c1.52.58,1.52,2.73,0,3.32"/>
+        <path fill="#808285" d="M145.37,10.46l-1.06,37.28-46.08-19.09c-1.53-.63-1.44-2.84.14-3.34l46.99-14.85h0Z"/>
+        <polygon fill="#808285" points="224.8 29.21 222.93 81.51 159.14 54.76 224.8 29.21"/>
+      </svg>
+      <span class="name">pre<span class="vis">vision</span> design</span>
+    </div>
+
+    <h1>Rebuilt Site<br>Almost Done!</h1>
+    <p class="lede">Sorry for the inconvenience. In the meantime, we're open for business so please get in touch!</p>
+
+    <div class="progress" role="presentation"></div>
+
+    <a class="btn" href="mailto:info@previsiondesign.com">info@previsiondesign.com</a>
+
+    <div class="meta">
+      <span class="firm">Prevision Design</span><br>
+      San Francisco, CA<br>
+      <a href="tel:+14154980141" style="color: inherit; text-decoration: none;">(415) 498-0141</a>
+    </div>
+  </main>
+
+</body>
+</html>
