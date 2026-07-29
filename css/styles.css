@@ -600,12 +600,21 @@ section { padding: 72px 0; }
 /* ---- CLIENTS ---- */
 .clients-section { border-top: 1px solid var(--gray-100); }
 
+/* Staggered rather than a strict grid: rows alternate 5 and 4 across, and
+   centring each row is what offsets it by half a cell against the one above. */
 .clients-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.clients-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 22px 40px;
+  gap: 18px 40px;
 }
 
 /* A shared cell rather than a shared height: these marks run from a 5:1
@@ -613,7 +622,7 @@ section { padding: 72px 0; }
    dominate. object-fit: contain inside one box evens out their optical weight. */
 .client-logo {
   width: 140px;
-  height: 56px;
+  height: 64px;
   object-fit: contain;
   /* one grey voice across a dozen brand palettes, at rest and on hover alike —
      delete these two lines to run them in their own colours */
@@ -627,7 +636,7 @@ section { padding: 72px 0; }
   align-items: center;
   justify-content: center;
   width: 140px;
-  height: 56px;
+  height: 64px;
   font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 600;
@@ -1074,6 +1083,12 @@ section { padding: 72px 0; }
 
   .services-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr; }
+
+  /* The 5/4 stagger needs the full width to read; at this size the row groups
+     just force orphan lines (one logo alone under a pair), so let them flow as
+     one wrapping group instead. */
+  .clients-grid { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 20px 30px; }
+  .clients-row { display: contents; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
 
