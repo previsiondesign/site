@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Cards that light up when scrolled to the middle of a touch screen, filled in
+  // by the two blocks below. enter/leave are optional — the discipline snippets
+  // need only the class, the work cards also start and stop their slideshow.
+  const litCards = [];
+
   // Featured Work: each card rests on its main still and cross-fades through the
   // project's other frames while hovered. Frames live in data-frames and are only
   // fetched on first hover, so the grid costs one image per card until then —
@@ -118,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetTimer = setTimeout(() => under.classList.remove('is-shown'), FADE);
         const hold = holds.length ? holds[at % holds.length] : HOLD;
         at += 1;
+        warm(files[at % files.length]);   // one ahead, so touch stays smooth too
         stepTimer = setTimeout(step, hold);
       };
       if (pre.complete) reveal();
@@ -155,9 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       if (!files.length) return;
-      // warm the whole set on the first hover so later steps keep to their hold
-      // rather than stalling on a fetch; the browser caps its own parallelism
-      if (!prefetched) {
+      // Warm the whole set on a hover device so later steps keep to their hold
+      // rather than stalling on a fetch. Deliberately NOT on touch: there the
+      // slideshow starts from scrolling past, and pulling all 27 Potrero frames
+      // for every card someone scrolls by would be megabytes of phone data.
+      // step() warms one frame ahead instead, which is enough to stay smooth.
+      if (!prefetched && window.matchMedia('(hover: hover)').matches) {
         prefetched = true;
         files.forEach(warm);
       }
@@ -181,30 +190,45 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('focusin', start);
     card.addEventListener('focusout', stop);
     if (still) still.addEventListener('dragstart', (e) => e.preventDefault());
+    litCards.push({ el: card, enter: start, leave: stop });
   });
 
-  // Discipline snippets sit greyscale until something singles a card out. On a
-  // hover device that is :hover (CSS); on a touch device there is nothing to
-  // hover, so the card nearest the middle of the viewport lights as you scroll.
-  const shotCards = Array.from(document.querySelectorAll('.service-card'))
-    .filter((c) => c.querySelector('.service-shot'));
-  if (shotCards.length) {
+  Array.from(document.querySelectorAll('.service-card'))
+    .filter((c) => c.querySelector('.service-shot'))
+    .forEach((c) => litCards.push({ el: c }));
+
+  // work cards with nothing to play still need to light, or on touch they never
+  // come back to full colour and never show their label
+  Array.from(document.querySelectorAll('.project-card'))
+    .filter((c) => !c.dataset.frames && !c.dataset.video)
+    .forEach((c) => litCards.push({ el: c }));
+
+  // Cards sit muted until something singles one out. On a hover device that is
+  // :hover (CSS); on a touch device there is nothing to hover, so whichever card
+  // is nearest the middle of the viewport lights as you scroll. Discipline
+  // snippets and Featured Work cards share the pool — they live in different
+  // sections, so in practice only one is ever near the middle.
+  if (litCards.length) {
     const canHover = window.matchMedia('(hover: hover)');
     let queued = false;
+    let current = null;
 
     function lightCentred() {
       queued = false;
       const middle = window.innerHeight / 2;
-      // start at a threshold rather than Infinity: with the grid off-screen or
+      // start at a threshold rather than Infinity: with a grid off-screen or
       // straddling the edge, nothing should be lit
       let best = null;
       let bestGap = window.innerHeight * 0.35;
-      shotCards.forEach((card) => {
-        const r = card.getBoundingClientRect();
+      litCards.forEach((item) => {
+        const r = item.el.getBoundingClientRect();
         const gap = Math.abs((r.top + r.bottom) / 2 - middle);
-        if (gap < bestGap) { bestGap = gap; best = card; }
+        if (gap < bestGap) { bestGap = gap; best = item; }
       });
-      shotCards.forEach((c) => c.classList.toggle('is-lit', c === best));
+      if (best === current) return;
+      if (current) { current.el.classList.remove('is-lit'); if (current.leave) current.leave(); }
+      current = best;
+      if (current) { current.el.classList.add('is-lit'); if (current.enter) current.enter(); }
     }
 
     function onScroll() {
@@ -214,7 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function syncLighting() {
       if (canHover.matches) {
         window.removeEventListener('scroll', onScroll);
-        shotCards.forEach((c) => c.classList.remove('is-lit'));
+        if (current) { current.el.classList.remove('is-lit'); if (current.leave) current.leave(); }
+        current = null;
       } else {
         window.addEventListener('scroll', onScroll, { passive: true });
         lightCentred();

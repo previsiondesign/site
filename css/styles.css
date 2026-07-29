@@ -61,6 +61,12 @@ a:hover { color: var(--orange); }
 /* inner gutter used by every band inside the frame */
 .inner { padding: 0 var(--frame-pad); }
 
+/* the header is sticky, so an anchor jump would otherwise tuck the section
+   heading underneath it — clear the header plus 8px of breathing room */
+#top, #services, #work, #about {
+  scroll-margin-top: calc(var(--header-height) + 8px);
+}
+
 /* ---- HEADER ---- */
 .site-header {
   position: sticky;
@@ -295,8 +301,13 @@ a:hover { color: var(--orange); }
 .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
 /* ---- BUTTONS ---- */
+/* inline-flex, not inline-block: in a flex row the outline button is 4px taller
+   (its 2px borders), so stretch adds the difference below the primary button's
+   text and it rides high. Centring here fixes it whatever the row does. */
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 12px 28px;
   font-family: var(--font-heading);
   font-size: 13px;
@@ -509,10 +520,18 @@ section { padding: 72px 0; }
 
 .project-card:hover img { transform: scale(1.05); }
 
+/* .is-lit is the touch equivalent of :hover — main.js sets it on whichever card
+   is centred in the viewport, and also runs that card's slideshow. */
 .project-card:hover img,
 .project-card:hover video,
 .project-card:focus-within img,
-.project-card:focus-within video { filter: saturate(1); }
+.project-card:focus-within video,
+.project-card.is-lit img,
+.project-card.is-lit video { filter: saturate(1); }
+
+/* the label overlay is hover-only by default, so on touch the lit card is the
+   only way to see which project it is */
+.project-card.is-lit .overlay { opacity: 1; }
 
 /* Slideshow layers, added by main.js on first hover — two of them, alternating,
    so an incoming frame fades in on top while the outgoing one stays opaque
@@ -597,16 +616,27 @@ section { padding: 72px 0; }
 }
 
 /* ---- ABOUT PREVIEW ---- */
+/* Photo spans both rows so the name and the body copy stack beside it, which is
+   how it looked when .about-text held the heading too. Named areas because at
+   ≤768px the photo shrinks and only the name sits next to it. */
 .about-preview {
   display: grid;
   grid-template-columns: 260px 1fr;
-  gap: 44px;
+  grid-template-areas:
+    "photo head"
+    "photo text";
+  gap: 0 44px;
   align-items: start;
 }
+
+.about-photo { grid-area: photo; }
+.about-head { grid-area: head; }
+.about-text { grid-area: text; }
 
 .about-photo {
   border-radius: 8px;
   overflow: hidden;
+  align-self: start;
 }
 
 .about-photo img {
@@ -948,6 +978,16 @@ section { padding: 72px 0; }
 @media (max-width: 768px) {
   :root { --header-height: 60px; --frame-pad: 24px; }
 
+  /* No backdrop-filter here: it makes the header the containing block for the
+     fixed nav below, which then resolves top/bottom against the 60px header and
+     collapses to zero height — the menu panel vanished and the links floated
+     over the page. The header is all but opaque anyway, so nothing is lost. */
+  .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--white);
+  }
+
   .main-nav {
     position: fixed;
     top: var(--header-height);
@@ -1005,8 +1045,21 @@ section { padding: 72px 0; }
   .services-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
-  .about-preview { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
+
+  /* Headshot shrinks and takes the left, with just the name and title beside
+     it; the body copy drops underneath at full width. */
+  .about-preview {
+    grid-template-columns: 96px 1fr;
+    grid-template-areas:
+      "photo head"
+      "text  text";
+    gap: 18px 16px;
+    align-items: center;
+  }
+
+  .about-head h3 { margin-bottom: 4px; }
+  .about-head .title { margin-bottom: 0; font-size: 13px; line-height: 1.45; }
 
   /* ---- contact page, tightened ---- */
   .page-hero { padding: 30px 0 26px; }
