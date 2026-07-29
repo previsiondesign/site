@@ -613,26 +613,21 @@ section { padding: 72px 0; }
    dominate. object-fit: contain inside one box evens out their optical weight. */
 .client-logo {
   width: 140px;
-  height: 44px;
+  height: 56px;
   object-fit: contain;
-  /* one grey voice across a dozen brand palettes — delete the filter and the
-     opacity to run them in their own colours */
+  /* one grey voice across a dozen brand palettes, at rest and on hover alike —
+     delete these two lines to run them in their own colours */
   filter: grayscale(1);
   opacity: 0.6;
-  transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
-@media (hover: hover) {
-  .client-logo:hover { filter: grayscale(0); opacity: 1; }
-}
-
-/* clients with no logo supplied still sit in the strip, at the same cell size */
+/* kept for any client whose logo we don't have — same cell as the logos */
 .client-name {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 140px;
-  height: 44px;
+  height: 56px;
   font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 600;
