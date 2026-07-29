@@ -604,17 +604,43 @@ section { padding: 72px 0; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 28px 44px;
+  align-items: center;
+  gap: 22px 40px;
 }
 
+/* A shared cell rather than a shared height: these marks run from a 5:1
+   wordmark to a square badge, so matching heights would let the wide ones
+   dominate. object-fit: contain inside one box evens out their optical weight. */
+.client-logo {
+  width: 140px;
+  height: 44px;
+  object-fit: contain;
+  /* one grey voice across a dozen brand palettes — delete the filter and the
+     opacity to run them in their own colours */
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+@media (hover: hover) {
+  .client-logo:hover { filter: grayscale(0); opacity: 1; }
+}
+
+/* clients with no logo supplied still sit in the strip, at the same cell size */
 .client-name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 44px;
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
   color: var(--gray-400);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  white-space: nowrap;
 }
 
 /* ---- ABOUT PREVIEW ---- */
@@ -997,13 +1023,11 @@ section { padding: 72px 0; }
     /* 80% transparent per Adam, so the blur is doing most of the legibility
        work now. Safe here — backdrop-filter only traps fixed children, and this
        panel has none. */
-    background: rgba(255, 255, 255, 0.2);
-    /* brightness() is carrying the legibility here: at 80% transparent the hero
-       shows through, and it cycles from near-white shadow maps to the dark tower
-       and the video. Lifting the backdrop keeps the links readable on the dark
-       frames (1.01:1 without it — invisible) without touching the transparency. */
-    backdrop-filter: blur(18px) brightness(2) saturate(1.3);
-    -webkit-backdrop-filter: blur(18px) brightness(2) saturate(1.3);
+    /* 80% opacity: enough of the page shows through to feel light, while the
+       links keep their contrast without any backdrop trickery. */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1015,8 +1039,7 @@ section { padding: 72px 0; }
   .main-nav.open { transform: translateX(0); }
 
   .main-nav ul { flex-direction: column; align-items: center; gap: 24px; }
-  /* darker than the desktop grey, for the same reason as the brightness above */
-  .main-nav a { font-size: 18px; color: var(--dark); }
+  .main-nav a { font-size: 18px; }
   .mobile-toggle { display: block; }
 
   .hero { height: 420px; }
