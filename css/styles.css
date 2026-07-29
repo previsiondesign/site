@@ -61,10 +61,12 @@ a:hover { color: var(--orange); }
 /* inner gutter used by every band inside the frame */
 .inner { padding: 0 var(--frame-pad); }
 
-/* the header is sticky, so an anchor jump would otherwise tuck the section
-   heading underneath it — clear the header plus 8px of breathing room */
+/* The header is sticky, so an anchor jump would otherwise tuck the section
+   heading underneath it. Exactly the header height, no more: any extra leaves a
+   sliver of the previous section showing in the gap, and the section's own
+   padding already sets the heading down from the header. */
 #top, #services, #work, #about {
-  scroll-margin-top: calc(var(--header-height) + 8px);
+  scroll-margin-top: var(--header-height);
 }
 
 /* ---- HEADER ---- */
@@ -503,12 +505,12 @@ section { padding: 72px 0; }
   cursor: pointer;
 }
 
-/* Held 15% down on saturation until the card is rolled over, then it comes back
+/* Held at half saturation until the card is rolled over, then it comes back
    to full colour. Unlike the discipline snippets this is a light touch, so it
    reads as "resting" rather than greyed out. */
 .project-card img,
 .project-card video {
-  filter: saturate(0.85);
+  filter: saturate(0.5);
   transition: transform 0.4s, filter 0.45s ease;
 }
 
@@ -992,7 +994,12 @@ section { padding: 72px 0; }
     position: fixed;
     top: var(--header-height);
     left: 0; right: 0; bottom: 0;
-    background: var(--white);
+    /* 10% transparent, with a blur so the links stay readable over whatever
+       image is behind. Safe here — backdrop-filter only traps fixed children,
+       and this panel has none. */
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
