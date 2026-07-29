@@ -1,0 +1,1098 @@
+/* ============================================
+   Prevision Design - B2 Type — Business (Autumn palette, Boxed Canvas)
+   Contained layout — the page sits on a centered
+   white sheet over a gray backdrop; never full width
+   on desktop.
+   ============================================ */
+
+:root {
+  --blue: #39444D;
+  --blue-dark: #07111D;
+  --blue-light: #5D6A75;
+  --orange: #DB9941;
+  --orange-light: #E8B46E;
+  --dark: #07111D;          /* headings / type only */
+  --surface-dark: #39444D;  /* dark page surfaces: footer, inner-page hero */
+  --gray-900: #2d2d2d;
+  --gray-700: #4a4a4a;
+  --gray-600: #5D5D5D;
+  --gray-400: #9C9C9C;
+  --gray-200: #d4d4d4;
+  --gray-100: #ececec;
+  --light: #E5E5DF;
+  --white: #ffffff;
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --frame-width: 1180px;
+  --frame-pad: 56px;
+  --header-height: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-700);
+  /* visible backdrop behind the boxed page */
+  background: linear-gradient(180deg, #c6c5be 0%, #d9d8d2 40%, #cfcec7 100%);
+  min-height: 100vh;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--blue); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--orange); }
+
+.pv-logo { display: block; }
+
+/* ---- PAGE FRAME ---- */
+.page-frame {
+  max-width: var(--frame-width);
+  margin: 32px auto 56px;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 30px 90px rgba(26,38,52,0.28);
+  overflow: clip; /* keeps rounded corners; allows position:sticky inside */
+}
+
+/* inner gutter used by every band inside the frame */
+.inner { padding: 0 var(--frame-pad); }
+
+/* ---- HEADER ---- */
+.site-header {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--gray-200);
+  z-index: 1000;
+  transition: box-shadow 0.3s;
+}
+
+.site-header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+
+.header-inner {
+  padding: 0 var(--frame-pad);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo .pv-logo { height: 32px; width: auto; }
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+}
+
+.main-nav a {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-600);
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.main-nav a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--gray-700);
+  margin: 6px 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.mobile-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+.mobile-toggle.open span:nth-child(2) { opacity: 0; }
+.mobile-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+/* ---- HERO ---- */
+.hero {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
+
+/* isolate: the cross-fade raises each incoming series' z-index, and without a
+   stacking context here those values would escape and paint the imagery over
+   the scrim and the headline block. */
+.hero-slides {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  background: var(--surface-dark);
+}
+
+/* a series = one 6s slot (e.g. a before/after pair, or a 6-frame study) */
+.hero-serie {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero-serie.is-active { opacity: 1; }
+
+/* Frames inside a series cross-fade on their own hold times. Both series and
+   frames fade IN on top of whatever is already showing (JS raises z-index and
+   holds the outgoing layer opaque underneath until the fade finishes), so a
+   transition never dips through the background the way two simultaneous
+   opacity ramps would. --fade is set per frame from its predecessor's hold. */
+.hero-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--fade, 600ms) ease;
+}
+
+.hero-frame.is-shown { opacity: 1; }
+
+.hero-frame img,
+.hero-frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center var(--focus, 50%);
+}
+
+/* Exhibits whose subject sits above centre — the shadow plume on the duration
+   maps, the insolation gradient up the tower — crop from higher up so the
+   full-bleed window lands on the analysis rather than the surrounding site. */
+.hero-serie.focus-upper { --focus: 42%; }
+
+/* Ken Burns. Applied to the series, not the individual frames, so the six
+   shadow-duration steps stay registered with each other as they cross-fade —
+   drifting them independently would make the same base map jitter. JS restarts
+   the animation on each show(). It runs 9s against a 6s series so it is still
+   moving through the 1s hand-off and never snaps back on screen.
+
+   Scale stays under the 1.52x headroom the 1800px masters have over a 1180px
+   hero, so nothing softens. Drift is capped well inside the overflow the scale
+   creates ((S-1)/2 per side), so no edge can ever pull into frame. */
+.hero-serie {
+  animation: kb-drift-a 9s ease-out both;
+  animation-play-state: paused;   /* only the visible series drifts */
+}
+
+.hero-serie.is-active { animation-play-state: running; }
+.hero-serie:nth-child(2) { animation-name: kb-drift-b; }
+.hero-serie:nth-child(4) { animation-name: kb-drift-c; }
+.hero-serie:nth-child(5) { animation-name: kb-drift-d; }
+.hero-serie.is-video { animation: none; }   /* the footage already moves */
+
+@keyframes kb-drift-a {   /* push in, drifting right and down */
+  from { transform: scale(1.08) translate(-1.4%, -0.7%); }
+  to   { transform: scale(1.16) translate(1.2%, 0.6%); }
+}
+@keyframes kb-drift-b {   /* pull back off the site, drifting left */
+  from { transform: scale(1.16) translate(1.2%, 0.7%); }
+  to   { transform: scale(1.08) translate(-1.2%, -0.5%); }
+}
+@keyframes kb-drift-c {   /* push in, drifting left and down */
+  from { transform: scale(1.08) translate(1.4%, -0.6%); }
+  to   { transform: scale(1.16) translate(-1.2%, 0.7%); }
+}
+@keyframes kb-drift-d {   /* push in, rising up the tower */
+  from { transform: scale(1.08) translate(0, 1.0%); }
+  to   { transform: scale(1.18) translate(0, -0.9%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-serie { animation: none; }
+  .hero-serie,
+  .hero-frame { transition: none; }
+}
+
+/* min-height reserves the tallest tagline so rotating copy never shifts the
+   buttons underneath it. */
+.hero p.hero-tagline {
+  min-height: 3.4em;
+  transition: opacity 0.4s ease;
+}
+
+.hero-tagline.is-fading { opacity: 0; }
+
+.hero-dots { display: flex; gap: 8px; margin-top: 24px; }
+
+.hero-dot {
+  width: 28px;
+  height: 4px;
+  border: none;
+  border-radius: 2px;
+  padding: 0;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hero-dot.is-active { background: var(--orange); }
+
+/* Two layers: a wash down the left where the headline block sits, plus the
+   bottom fade. The wash is what makes white type hold up over the light
+   exhibits (shadow maps are near-white paper) without muddying the imagery on
+   the right, which a single stronger vertical gradient would do. */
+/* inset -2px, not 0: the Ken Burns transform puts each series on its own
+   compositing layer, whose clip against .hero's overflow rounds outward to whole
+   device pixels — so at inset 0 a 1px row of undimmed image bled through along
+   the bottom edge. Overhanging the clip box covers it; .hero clips the excess. */
+.hero-scrim {
+  position: absolute;
+  inset: -2px;
+  background:
+    linear-gradient(90deg, rgba(7,17,29,0.72) 0%, rgba(7,17,29,0.45) 38%, rgba(7,17,29,0) 62%),
+    linear-gradient(180deg, rgba(7,17,29,0.10) 25%, rgba(7,17,29,0.78) 100%);
+  transition: background 0.6s ease;
+}
+
+.hero-content {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 0 var(--frame-pad) 48px;
+  color: var(--white);
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+
+.hero p {
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 620px;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 24px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+}
+
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* ---- BUTTONS ---- */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary { background: var(--orange); color: var(--white); }
+.btn-primary:hover { background: #C98A33; color: var(--white); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--white);
+}
+
+.btn-outline:hover { background: var(--white); color: var(--dark); }
+
+/* ---- STATS BAR ---- */
+.stats-bar {
+  background: var(--blue);
+  padding: 44px 0;
+}
+
+/* Slot for the hero buttons at ≤768px; stays out of the way above that. */
+.stats-actions:empty { display: none; }
+
+/* Stat labels shorten at ≤768px — see the media query. display:none keeps the
+   unused wording out of the accessibility tree, so nothing reads twice. */
+.lbl-short { display: none; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+  color: var(--white);
+}
+
+.stat-item .stat-number {
+  font-family: var(--font-heading);
+  font-size: 38px;
+  font-weight: 700;
+  display: block;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-item .stat-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+/* ---- SECTIONS ---- */
+section { padding: 72px 0; }
+.hero { padding: 0; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-header h2 {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.section-header p {
+  font-size: 16px;
+  color: var(--gray-600);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.section-header .accent-line {
+  width: 48px;
+  height: 3px;
+  background: var(--orange);
+  margin: 16px auto 0;
+}
+
+/* ---- SERVICE CARDS ---- */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+
+/* Work snippet across the top of each discipline card. Negative margins pull it
+   out of the card's padding so it sits flush to the border, and the top corners
+   follow the card's 8px radius less its 1px border. */
+.service-shot {
+  margin: -32px -24px 20px;
+  border-radius: 7px 7px 0 0;
+  overflow: hidden;
+  aspect-ratio: 4.2 / 1;
+  background: var(--light);
+}
+
+.service-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Desaturated and lightened at rest, rolling into colour over 550ms. */
+.service-shot img {
+  filter: grayscale(1) brightness(1.3) contrast(0.86);
+  transition: filter 0.55s ease;
+}
+
+@media (hover: hover) {
+  .service-card:hover .service-shot img,
+  .service-card:focus-within .service-shot img { filter: none; }
+}
+
+/* Touch devices have no hover to work with, so main.js lights whichever card is
+   centred in the viewport as you scroll and clears the rest. */
+.service-card.is-lit .service-shot img { filter: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .service-shot img { transition: none; }
+}
+
+.service-card h3 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+.service-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--light);
+  border-color: transparent;
+}
+
+.service-cta h3 { color: var(--blue); margin-bottom: 12px; }
+.service-cta .btn { align-self: center; margin-top: 14px; }
+
+/* ---- FEATURED PROJECTS ---- */
+.work-section { background: var(--light); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.project-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+}
+
+/* Held 15% down on saturation until the card is rolled over, then it comes back
+   to full colour. Unlike the discipline snippets this is a light touch, so it
+   reads as "resting" rather than greyed out. */
+.project-card img,
+.project-card video {
+  filter: saturate(0.85);
+  transition: transform 0.4s, filter 0.45s ease;
+}
+
+.project-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card:hover img { transform: scale(1.05); }
+
+.project-card:hover img,
+.project-card:hover video,
+.project-card:focus-within img,
+.project-card:focus-within video { filter: saturate(1); }
+
+/* Slideshow layers, added by main.js on first hover — two of them, alternating,
+   so an incoming frame fades in on top while the outgoing one stays opaque
+   underneath (the same no-dip trick as the hero). z-index is capped at 2 rather
+   than climbing, so .overlay at 3 always stays above the imagery. */
+/* width/height are explicit because inset alone does NOT stretch a replaced
+   element — a <video> with auto sizing lays out at its intrinsic 640x480 and gets
+   clipped to the card's top-left corner, which reads as "only the left of the
+   frame". The img layers escaped this only by matching .project-card img. */
+.project-card .pc-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  /* --pc-fade is set per card from data-fade; Old Bayshore runs a double-length
+     cross-fade because its frames are existing/proposed pairs */
+  transition: opacity var(--pc-fade, 500ms) ease, transform 0.4s, filter 0.45s ease;
+}
+
+.project-card .pc-frame.is-shown { opacity: 1; }
+
+.project-card .overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(transparent 40%, rgba(0,0,0,0.8));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.project-card:hover .overlay { opacity: 1; }
+
+.project-card .overlay h4 {
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+
+.badge-visual { background: #AE2C11; color: var(--white); }
+.badge-shadow { background: var(--blue); color: var(--white); }
+.badge-daylight { background: var(--orange); color: var(--white); }
+
+/* ---- CLIENTS ---- */
+.clients-section { border-top: 1px solid var(--gray-100); }
+
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 44px;
+}
+
+.client-name {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* ---- ABOUT PREVIEW ---- */
+.about-preview {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 44px;
+  align-items: start;
+}
+
+.about-photo {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.about-text h3 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.about-text .title {
+  font-size: 14px;
+  color: var(--blue);
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.about-text p { margin-bottom: 14px; color: var(--gray-600); }
+
+/* ---- FOOTER ---- */
+.site-footer {
+  background: var(--surface-dark);
+  /* lighter than --gray-400 to keep contrast on the grey surface */
+  color: rgba(255,255,255,0.76);
+  padding: 48px 0 24px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 44px;
+  margin-bottom: 36px;
+}
+
+.footer-brand p {
+  font-size: 14px;
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+.footer-col h4 {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 8px; }
+.footer-col a { color: rgba(255,255,255,0.76); font-size: 14px; }
+.footer-col a:hover { color: var(--orange-light); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.16);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ---- INNER-PAGE HERO (contact) ---- */
+.page-hero {
+  background: var(--surface-dark);
+  color: var(--white);
+  padding: 56px 0;
+}
+
+.page-hero h1 {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.page-hero p {
+  font-size: 16.5px;
+  color: rgba(255,255,255,0.78);
+  max-width: 520px;
+}
+
+/* ---- CONTACT PAGE ---- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+
+.field { margin-bottom: 20px; border: none; padding: 0; }
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field label,
+.field legend {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-600);
+  margin-bottom: 7px;
+  padding: 0;
+}
+
+.field .req { color: var(--orange); }
+
+.hint-inline {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--gray-400);
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--dark);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(219,153,65,0.15);
+}
+
+.field input.invalid,
+.field textarea.invalid { border-color: #AE2C11; }
+
+.field textarea { resize: vertical; min-height: 130px; }
+
+.field.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* service checkboxes */
+.check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+}
+
+/* label.check needs to outrank the uppercase `.field label` rule above */
+.field label.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--gray-700);
+  margin: 0;
+  cursor: pointer;
+}
+
+.check input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--gray-200);
+  border-radius: 3px;
+  background: var(--white);
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.check input:hover { border-color: var(--orange); }
+
+.check input:checked {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.check input:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.check input:focus-visible { box-shadow: 0 0 0 3px rgba(219,153,65,0.25); }
+
+/* optional attachments */
+.file-drop {
+  border: 2px dashed var(--gray-200);
+  border-radius: 4px;
+  padding: 22px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.file-drop:hover, .file-drop.drag { border-color: var(--orange); background: #faf8f4; }
+.file-drop:focus-visible { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(219,153,65,0.15); }
+
+.fd-label { font-size: 14.5px; color: var(--gray-600); line-height: 1.6; }
+.fd-label em { font-style: normal; font-size: 12.5px; color: var(--gray-400); }
+
+.attach-list { list-style: none; margin: 10px 0 0; }
+
+.attach-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 2px;
+  border-bottom: 1px solid var(--light);
+  font-size: 14px;
+}
+
+.attach-list .aname { flex: 1; color: var(--blue); word-break: break-all; }
+.attach-list .asize { font-size: 12.5px; color: var(--gray-400); white-space: nowrap; }
+
+.attach-list .aremove {
+  border: none;
+  background: none;
+  font-size: 19px;
+  line-height: 1;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.attach-list .aremove:hover { color: #AE2C11; }
+
+.attach-hint { font-size: 12.5px; color: var(--gray-400); margin-top: 8px; }
+
+/* only shown at ≤768px, where the drop zone becomes a button */
+.fd-note { display: none; }
+
+.form-error {
+  font-size: 14px;
+  color: #AE2C11;
+  margin-bottom: 14px;
+}
+
+.form-fineprint {
+  font-size: 12.5px;
+  color: var(--gray-400);
+  margin-top: 12px;
+}
+
+.form-success {
+  background: var(--light);
+  border-left: 3px solid var(--orange);
+  border-radius: 4px;
+  padding: 28px 30px;
+}
+
+.form-success h3 {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.form-success p { font-size: 15px; color: var(--gray-600); }
+
+.form-success .demo-note {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* info column */
+.contact-info { border-left: 1px solid var(--gray-200); padding-left: 40px; }
+
+.info-block { margin-bottom: 26px; }
+
+.info-block h4 {
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 5px;
+}
+
+.info-block p { font-size: 14.5px; color: var(--gray-600); line-height: 1.65; }
+.info-block a { color: var(--blue); }
+.info-block a:hover { color: var(--orange); }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 1240px) {
+  /* frame meets the viewport edge — drop the floating look */
+  .page-frame {
+    margin: 0;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root { --frame-pad: 32px; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .contact-info { border-left: none; padding-left: 0; border-top: 1px solid var(--gray-200); padding-top: 32px; }
+}
+
+@media (max-width: 768px) {
+  :root { --header-height: 60px; --frame-pad: 24px; }
+
+  .main-nav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0; right: 0; bottom: 0;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    z-index: 999;
+  }
+
+  .main-nav.open { transform: translateX(0); }
+
+  .main-nav ul { flex-direction: column; align-items: center; gap: 24px; }
+  .main-nav a { font-size: 18px; }
+  .mobile-toggle { display: block; }
+
+  .hero { height: 420px; }
+  .hero h1 { font-size: 27px; }
+  .hero p { font-size: 15px; }
+
+  /* Three lines of tagline wrap at this width, so reserve them or the buttons
+     jump as the series rotate. */
+  .hero p.hero-tagline { min-height: 4.9em; }
+
+  /* With the buttons moved to the stats bar the text block is roughly half
+     what it was, so it sits low and leaves the upper two-thirds of the image
+     clear. Padding is tight because the dots are the last thing in the block. */
+  .hero-content { padding-bottom: 18px; }
+  .hero-dots { margin-top: 16px; }
+
+  /* Text spans the full width here, so the left wash can't do the work — carry
+     it vertically instead. Lighter up top than it used to be: the type now
+     starts around 55% down, so the image can stay clear above it. */
+  .hero-scrim {
+    background: linear-gradient(180deg, rgba(7,17,29,0.16) 0%, rgba(7,17,29,0.42) 42%, rgba(7,17,29,0.90) 100%);
+  }
+
+  /* Buttons relocated off the hero image by main.js sit above the stats. */
+  .stats-bar { padding: 26px 0 30px; }
+  .stats-actions { margin-bottom: 24px; }
+  .stats-actions .hero-actions { gap: 12px; flex-wrap: nowrap; }
+  .stats-actions .btn { flex: 1; text-align: center; padding: 13px 8px; }
+
+  /* Two stats on one line — the other two are cut here per Adam. */
+  .stat-item:nth-child(2),
+  .stat-item:nth-child(4) { display: none; }
+
+  /* "Projects" / "Clients" — short enough to stay on one line each. */
+  .lbl-long { display: none; }
+  .lbl-short { display: inline; }
+
+  .services-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .about-preview { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+
+  /* ---- contact page, tightened ---- */
+  .page-hero { padding: 30px 0 26px; }
+  .page-hero + section { padding: 26px 0 40px; }
+  .page-hero h1 { font-size: 26px; margin-bottom: 6px; }
+  .page-hero p { font-size: 15.5px; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+  .check-grid { grid-template-columns: 1fr; gap: 2px; }
+  .field { margin-bottom: 14px; }
+  .contact-grid { gap: 28px; }
+  .contact-info { padding-top: 24px; }
+  .info-block { margin-bottom: 18px; }
+
+  /* A dashed landing zone means nothing on a touch device — there is nothing
+     to drag. Collapse it to a plain button; the file input behind it is
+     unchanged, so tapping still opens the picker. */
+  .file-drop {
+    display: inline-block;
+    width: auto;
+    padding: 12px 24px;
+    border: 2px solid var(--blue);
+    border-radius: 3px;
+    background: transparent;
+    line-height: 1;   /* the block's strut sets the line box, not the label's */
+  }
+  .file-drop:hover, .file-drop.drag { background: transparent; border-color: var(--orange); }
+  .fd-label {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;          /* so it matches the submit button's height */
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .fd-label br, .fd-label em { display: none; }
+  .fd-note { display: block; font-size: 12.5px; color: var(--gray-400); margin-top: 8px; }
+
+  section { padding: 48px 0; }
+  .section-header { margin-bottom: 36px; }
+  .section-header h2 { font-size: 25px; }
+}
+
+/* ---- FLOATING RETURN-TO-HUB BUTTON (review tool) ---- */
+.back-to-hub {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2000;
+  padding: 10px 18px;
+  background: rgba(20,20,20,0.82);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.15s;
+}
+.back-to-hub:hover { background: #000; color: #fff; transform: translateY(-1px); }
+
+/* ---- LOGO LOCKUP: 3D box icon + lowercase wordmark as live type ---- */
+.logo { display: flex; align-items: center; }
+.logo-lockup { --icon-h: 37.4px; display: flex; align-items: center; gap: 18px; }
+/* Optical alignment default: the icon art's cast shadow extends left of the
+   P box (see ALIGNMENT NOTE in shared/images/prevision_icon.svg). Shift icon
+   and text by 25.9% of the icon's width (= height x 0.3253) so the P box,
+   not the shadow, sits on the layout edge. Keyed to --icon-h so it adapts
+   to any size; footer overrides --icon-h and inherits the correct offset. */
+.logo-icon { height: var(--icon-h); width: auto; display: block; transform: translate(calc(var(--icon-h) * -0.3253), 2px); }
+.logo-text { transform: translateX(calc(var(--icon-h) * -0.3253)); }
+.logo-text {
+  font-family: var(--font-heading);
+  font-size: 20.2px;
+  line-height: 1;
+  color: var(--dark);
+  white-space: nowrap;
+}
+.site-footer .logo-lockup { --icon-h: 26px; }
+.site-footer .logo-text { color: var(--white); font-size: 17px; opacity: 0.92; }
+
+/* ---- TYPE STUDY: Business (Inter throughout) ---- */
+.logo-text { font-weight: 400; letter-spacing: -0.02em; }
+.logo-text .vis { font-weight: 600; }
+.logo-text .lt2 { font-weight: 400; }

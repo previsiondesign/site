@@ -3,191 +3,349 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prevision Design | Site Under Construction</title>
-  <meta name="description" content="The new Prevision Design website is under construction.">
+  <title>Prevision Design | Analysis for the Built Environment</title>
+  <meta name="description" content="Sun and shadow studies, daylight analysis, visual simulation, and peer review for architects, developers, and planning agencies throughout California.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Autumn palette: navy 07111D / slate 39444D / gray 5D5D5D /
-       off-white E5E5DF / amber DB9941 / rust AE2C11.
-       Type: Inter (matches the "Type — Business" direction).
-       Self-contained — no external assets; safe to deploy as a single file. */
-    :root {
-      --navy: #07111D;
-      --slate: #39444D;
-      --gray: #5D5D5D;
-      --pale: #E5E5DF;
-      --amber: #DB9941;
-      --amber-dark: #C98A33;
-      --amber-light: #E8B46E;
-      --white: #ffffff;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(180deg, #c6c5be 0%, #d9d8d2 40%, #cfcec7 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      color: var(--gray);
-    }
-
-    .card {
-      background: var(--white);
-      max-width: 480px;
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 30px 90px rgba(7, 17, 29, 0.25);
-      padding: 64px 56px 48px;
-      text-align: center;
-    }
-
-    .lockup {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 17.6px;
-      margin-bottom: 54px;
-    }
-
-    .lockup svg {
-      height: 73.6px;
-      width: auto;
-      /* center the P box, not the art bounds — the cast shadow extends left.
-         See ALIGNMENT NOTE in shared/images/prevision_icon.svg */
-      transform: translateX(-12.9%);
-    }
-
-    .lockup .name {
-      font-size: 20px;
-      font-weight: 400;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      color: var(--navy);
-      white-space: nowrap;
-    }
-
-    .lockup .name .vis { font-weight: 600; }
-
-    h1 {
-      font-size: 33px;
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--slate);
-      margin-bottom: 18px;
-    }
-
-    .lede {
-      font-size: 16px;
-      line-height: 1.7;
-      max-width: 420px;
-      margin: 0 auto 32px;
-    }
-
-    /* subtle "in progress" shimmer bar */
-    .progress {
-      position: relative;
-      width: 200px;
-      height: 4px;
-      border-radius: 2px;
-      background: var(--pale);
-      margin: 0 auto 36px;
-      overflow: hidden;
-    }
-
-    .progress::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 40%;
-      border-radius: 2px;
-      background: linear-gradient(90deg, var(--amber), var(--amber-light));
-      animation: slide 2.4s ease-in-out infinite;
-    }
-
-    @keyframes slide {
-      0%   { left: -40%; }
-      55%  { left: 100%; }
-      100% { left: 100%; }
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 32px;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border-radius: 4px;
-      background: var(--amber);
-      color: var(--white);
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .btn:hover { background: var(--amber-dark); transform: translateY(-1px); }
-
-    .meta {
-      border-top: 1px solid var(--pale);
-      margin-top: 44px;
-      padding-top: 22px;
-      font-size: 13px;
-      line-height: 1.8;
-      color: var(--gray);
-    }
-
-    .meta .firm {
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: var(--slate);
-    }
-
-    @media (max-width: 520px) {
-      .card { padding: 44px 28px 36px; }
-      h1 { font-size: 26px; }
-      .lockup { gap: 13px; }
-      .lockup svg { height: 58px; }
-      .lockup .name { font-size: 16px; }
-    }
-
-  </style>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <main class="card">
-    <div class="lockup">
-      <svg role="img" aria-label="Prevision Design icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 236.49 188.05">
-        <path fill="#6fb9d8" d="M217.09,187.68c-18.88-2.26-37.76-4.53-56.64-6.79C106.97,157.43,53.48,133.97,0,110.51c23.76-8.08,37.41-15.23,61.17-23.31v33.16l155.91,67.31"/>
-        <polygon fill="#231f20" points="218.72 94.3 61.17 26.78 61.17 120.36 218.72 187.88 218.72 94.3"/>
-        <polygon fill="#808285" points="236.49 87.2 218.72 94.46 218.72 188.05 236.49 177.88 236.49 87.2"/>
-        <polygon fill="#fff" points="64.77 26.96 145.7 1.32 221.27 29.24 155.8 54.71 233.18 87.17 218.73 92.95 64.77 26.96"/>
-        <path fill="#fff" d="M145.73,0L61.17,26.78l157.55,67.52,17.77-7.11-77.35-32.44,65.66-25.55L145.73,0ZM145.67,2.65l72.07,26.62-59.5,23.16-5.78,2.25,5.71,2.4,71.71,30.07-11.13,4.45L68.36,27.14,145.67,2.65Z"/>
-        <path fill="#231f20" d="M192.62,31.92l-41.66,16.1c-.43.16-3.08.97-5.59.15l-47.14-19.53c-1.53-.64-1.44-2.84.14-3.34l46.4-14.66c.38-.12.8-.11,1.17.04l46.67,17.92c1.52.58,1.52,2.73,0,3.32"/>
-        <path fill="#808285" d="M145.37,10.46l-1.06,37.28-46.08-19.09c-1.53-.63-1.44-2.84.14-3.34l46.99-14.85h0Z"/>
-        <polygon fill="#808285" points="224.8 29.21 222.93 81.51 159.14 54.76 224.8 29.21"/>
-      </svg>
-      <span class="name">pre<span class="vis">vision</span> design</span>
+  <div class="page-frame">
+
+    <!-- HEADER (sticky within the frame) -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-lockup">
+            <img class="logo-icon" src="shared/images/prevision_icon.svg" alt="Prevision Design">
+            <span class="logo-text">pre<span class="vis">vision</span> <span class="lt2">design</span></span>
+          </span>
+        </a>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO: five series, 6s each. Frames inside a series hold for their own
+         data-dur (mirrors the _#s in the master filenames). Every series is
+         full-bleed per Adam (2026-07-28) — legends and title blocks crop away,
+         and the tagline carries the explanation instead. focus-upper shifts
+         the crop window up where the subject sits above centre. -->
+    <section class="hero" id="top">
+      <div class="hero-slides">
+
+        <!-- 1. Visual simulations — Old Bayshore before (2s) / after (4s) -->
+        <div class="hero-serie is-active" data-tagline="Photorealistic visual simulations that show commissions and communities exactly what's proposed.">
+          <div class="hero-frame" data-dur="2000">
+            <img data-src="shared/images/hero/hl01-ob.webp" alt="Old Bayshore — existing conditions">
+          </div>
+          <!-- data-fade: 2s cross-fade from existing to proposed, per Adam -->
+          <div class="hero-frame" data-dur="4000" data-fade="2000">
+            <img data-src="shared/images/hero/hl02-ob.webp" alt="Old Bayshore — proposed development, visual simulation">
+          </div>
+        </div>
+
+        <!-- 2. Sun & shadow studies — Potrero Power Station duration exhibits -->
+        <div class="hero-serie focus-upper" data-tagline="Quantified sun and shadow studies — Section 295 and CEQA-compliant analysis and reporting.">
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl03-ppp.webp" alt="Net new shadow duration study — September"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl04-ppp.webp" alt="Net new shadow duration study"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl05-ppp.webp" alt="Net new shadow duration study"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl06-ppp.webp" alt="Net new shadow duration study"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl07-ppp.webp" alt="Net new shadow duration study"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl08-ppp.webp" alt="Net new shadow duration study"></div>
+        </div>
+
+        <!-- 3. Animated simulation — SFMTA -->
+        <div class="hero-serie is-video" data-tagline="Animated simulations and shadow sequences built for public hearings and community outreach.">
+          <div class="hero-frame" data-dur="6000">
+            <video data-src="shared/images/hero/hl09-sfmta.mp4" muted loop playsinline preload="none" aria-label="Animated visual simulation"></video>
+          </div>
+        </div>
+
+        <!-- 4. Daylight / interior lighting analysis -->
+        <div class="hero-serie" data-tagline="Daylight and interior lighting analysis for proposed developments and their neighbors.">
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl10-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl11-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl12-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl13-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl14-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+          <div class="hero-frame" data-dur="1000"><img data-src="shared/images/hero/hl15-fc.webp" alt="Interior daylight levels — photometric analysis"></div>
+        </div>
+
+        <!-- 5. Shadow shaping (placeholder art) — cropped high to keep the hot
+             end of the insolation gradient on the tower in frame -->
+        <div class="hero-serie focus-upper" data-tagline="Shadow shaping — building form studied and refined to reduce shadow on parks, plazas, and sensitive areas.">
+          <div class="hero-frame" data-dur="6000">
+            <img data-src="shared/images/hero/hl16-ss.webp" alt="Building massing studied for solar exposure and shadow reduction">
+          </div>
+        </div>
+
+      </div>
+      <div class="hero-scrim"></div>
+      <div class="hero-content">
+        <h1>Analysis for<br>the Built Environment</h1>
+        <p class="hero-tagline">Photorealistic visual simulations that show commissions and communities exactly what's proposed.</p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Our Services</a>
+          <a href="#work" class="btn btn-outline">View Work</a>
+        </div>
+        <div class="hero-dots" aria-label="Hero slides"></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="inner">
+        <!-- ≤768px only: main.js moves the hero's buttons in here, off the
+             image, and puts them back on resize past the breakpoint -->
+        <div class="stats-actions" id="stats-actions"></div>
+        <div class="stats-grid">
+          <!-- short labels at ≤768px, where these two carry the row alone and
+               "Client Organizations" wrapped to two lines -->
+          <div class="stat-item">
+            <span class="stat-number">120+</span>
+            <span class="stat-label"><span class="lbl-long">Projects Completed</span><span class="lbl-short">Projects</span></span>
+          </div>
+          <!-- hidden at ≤768px, where only two stats are shown on one line -->
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Years of Experience</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label"><span class="lbl-long">Client Organizations</span><span class="lbl-short">Clients</span></span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">CA</span>
+            <span class="stat-label">Licensed Architect</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <h1>Rebuilt Site<br>Almost Done!</h1>
-    <p class="lede">Sorry for the inconvenience. In the meantime, we're open for business so please get in touch!</p>
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="inner">
+        <div class="section-header">
+          <h2>What We Do</h2>
+          <p>Technical studies and reporting at the intersection of design, regulation, and the built environment</p>
+          <div class="accent-line"></div>
+        </div>
+        <div class="services-grid">
 
-    <div class="progress" role="presentation"></div>
+          <div class="service-card">
+            <div class="service-shot">
+              <img src="shared/images/disciplines/shadow-studies.webp" alt="Shadow duration study — net new shadow mapped across a project site" loading="lazy" decoding="async">
+            </div>
+            <h3>Shadow Studies</h3>
+            <p>Quantitative shadow impact assessments, Section 295 compliance, shadow envelope studies, and location-duration heatmapping for CEQA and planning review.</p>
+          </div>
 
-    <a class="btn" href="mailto:info@previsiondesign.com">info@previsiondesign.com</a>
+          <div class="service-card">
+            <div class="service-shot">
+              <img src="shared/images/disciplines/shadow-shaping.webp" alt="Building massing colour-mapped by solar exposure during form studies" loading="lazy" decoding="async">
+            </div>
+            <h3>Shadow Shaping</h3>
+            <p>Design-phase collaboration that shapes building form to reduce or eliminate shadow cast on parks, plazas, and other sensitive areas &mdash; resolving impacts before they become entitlement risk.</p>
+          </div>
 
-    <div class="meta">
-      <span class="firm">Prevision Design</span><br>
-      San Francisco, CA<br>
-      <a href="tel:+14154980141" style="color: inherit; text-decoration: none;">(415) 498-0141</a><br>
-      <a href="https://clients.previsiondesign.com" style="color: inherit;">Client Area &rarr;</a>
-    </div>
-  </main>
+          <div class="service-card">
+            <div class="service-shot">
+              <img src="shared/images/disciplines/daylight-studies.webp" alt="Photometric daylight analysis of an interior, showing a sunlight shaft" loading="lazy" decoding="async">
+            </div>
+            <h3>Daylight Studies</h3>
+            <p>Comprehensive daylight access analysis evaluating natural light conditions for proposed developments and their impact on surrounding properties.</p>
+          </div>
 
+          <div class="service-card">
+            <div class="service-shot">
+              <img src="shared/images/disciplines/visual-studies.webp" alt="Photorealistic visual simulation of a proposed waterfront development" loading="lazy" decoding="async">
+            </div>
+            <h3>Visual Studies</h3>
+            <p>Photorealistic visual simulations and photomontages that communicate complex design proposals to stakeholders, planning commissions, and communities.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-shot">
+              <img src="shared/images/disciplines/peer-review.webp" alt="Independent technical review of another consultant’s analysis" loading="lazy" decoding="async">
+            </div>
+            <h3>Peer Review</h3>
+            <p>Independent technical review of shadow studies, visual simulations, and environmental analyses prepared by other consultants for quality assurance.</p>
+          </div>
+
+          <div class="service-card service-cta">
+            <h3>Ready to start your project?</h3>
+            <p>Contact us for a consultation on your development project's analytical needs.</p>
+            <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS -->
+    <section class="work-section" id="work">
+      <div class="inner">
+        <div class="section-header">
+          <h2>Featured Work</h2>
+          <p>A selection of recent projects spanning shadow analysis, daylight studies, and visual simulation</p>
+          <div class="accent-line"></div>
+        </div>
+        <div class="projects-grid">
+
+          <div class="project-card"
+            data-frames="ppp-01.webp,ppp-02.webp,ppp-03.webp,ppp-04.webp,ppp-05.webp,ppp-06.webp,ppp-07.webp,ppp-08.webp,ppp-09.webp,ppp-10.webp,ppp-11.webp,ppp-12.webp,ppp-13.webp,ppp-14.webp,ppp-15.webp,ppp-16.webp,ppp-17.webp,ppp-18.webp,ppp-19.webp,ppp-20.webp,ppp-21.webp,ppp-22.webp,ppp-23.webp,ppp-24.webp,ppp-25.webp,ppp-26.webp,ppp-27.webp">
+            <img src="shared/images/work/ppp-main.webp" alt="Net new shadow duration mapped across the Potrero Power Station site" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-shadow">Shadow Study</span>
+              <h4>Potrero Power Plant, San Francisco</h4>
+            </div>
+          </div>
+
+          <div class="project-card"
+            data-frames="he-01.webp,he-02.webp,he-03.webp,he-04.webp,he-05.webp,he-06.webp,he-07.webp,he-08.webp,he-09.webp,he-10.webp,he-11.webp,he-12.webp,he-13.webp,he-14.webp,he-15.webp,he-16.webp,he-17.webp,he-18.webp">
+            <img src="shared/images/work/he-main.webp" alt="Aerial visual simulation supporting the San Francisco Housing Element" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-visual">Visual Simulation</span>
+              <h4>Housing Element, San Francisco</h4>
+            </div>
+          </div>
+
+          <div class="project-card"
+            data-frames="fc-01.webp,fc-02.webp,fc-03.webp,fc-04.webp,fc-05.webp,fc-06.webp,fc-07.webp,fc-08.webp,fc-09.webp,fc-10.webp,fc-11.webp,fc-12.webp">
+            <img src="shared/images/work/fc-main.webp" alt="Photometric daylighting simulation of interior light levels" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-daylight">Daylight Study</span>
+              <h4>Foster City, California</h4>
+            </div>
+          </div>
+
+          <div class="project-card"
+            data-frames="ob-01.webp,ob-02.webp,ob-03.webp,ob-04.webp,ob-05.webp,ob-06.webp,ob-07.webp,ob-08.webp"
+            data-holds="1500,2500,1500,2500,1500,2500,1500,2500"
+            data-fade="1000">
+            <img src="shared/images/work/ob-main.webp" alt="Visual simulation of the proposed Old Bayshore development" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-visual">Visual Simulation</span>
+              <h4>Old Bayshore, Burlingame</h4>
+            </div>
+          </div>
+
+          <div class="project-card"
+            data-video="val-options.mp4">
+            <img src="shared/images/work/val-main.webp" alt="Streetscape design options studied for Valencia Street" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-visual">Visual Simulation</span>
+              <h4>Valencia Street, San Francisco</h4>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <img src="shared/images/work/ss-main.webp" alt="Building massing colour-mapped by solar exposure during form studies" loading="lazy" decoding="async">
+            <div class="overlay">
+              <span class="badge badge-shadow">Shadow Shaping</span>
+              <h4>Shadow Shaping Study</h4>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CLIENTS -->
+    <section class="clients-section">
+      <div class="inner">
+        <div class="section-header">
+          <h2>Trusted By</h2>
+          <p>We collaborate with leading environmental consultants, architects, and developers</p>
+          <div class="accent-line"></div>
+        </div>
+        <div class="clients-grid">
+          <span class="client-name">ESA</span>
+          <span class="client-name">ICF</span>
+          <span class="client-name">SWCA</span>
+          <span class="client-name">Stantec</span>
+          <span class="client-name">Tishman Speyer</span>
+          <span class="client-name">Related California</span>
+          <span class="client-name">TMG Partners</span>
+          <span class="client-name">Perkins &amp; Will</span>
+          <span class="client-name">Urban Planning Partners</span>
+          <span class="client-name">SF Planning Dept.</span>
+          <span class="client-name">SF Rec &amp; Parks</span>
+          <span class="client-name">Port of SF</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PREVIEW -->
+    <section id="about">
+      <div class="inner">
+        <div class="about-preview">
+          <div class="about-photo">
+            <img src="shared/images/adam_phillips.jpg" alt="Adam Phillips, Principal">
+          </div>
+          <div class="about-text">
+            <h3>Adam Phillips</h3>
+            <div class="title">Principal &amp; Founder &mdash; Licensed Architect, CA C-30995</div>
+            <p>Prevision Design produces the technical studies and reporting that projects need to get through review &mdash; sun and shadow analysis, daylight studies, and visual simulation, prepared to the standards planning departments and hearing bodies expect.</p>
+            <p>Based in San Francisco and serving jurisdictions throughout California, we have developed unparalleled proficiency in navigating complex planning requirements while helping architects and developers optimize building envelopes and minimize impacts on public open spaces.</p>
+            <a href="contact.html" class="btn btn-primary" style="margin-top:8px;">Get in Touch</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <span class="logo-lockup">
+              <img class="logo-icon" src="shared/images/prevision_icon_reverse.svg" alt="Prevision Design">
+              <span class="logo-text">pre<span class="vis">vision</span> <span class="lt2">design</span></span>
+            </span>
+            <p>Sun and shadow studies, daylight analysis, visual simulation, and peer review for projects throughout California.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#services">Shadow Studies</a></li>
+              <li><a href="#services">Shadow Shaping</a></li>
+              <li><a href="#services">Daylight Studies</a></li>
+              <li><a href="#services">Visual Studies</a></li>
+              <li><a href="#services">Peer Review</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="contact.html">Contact form</a></li>
+              <li><a href="mailto:info@previsiondesign.com">info@previsiondesign.com</a></li>
+              <li>San Francisco, CA</li>
+              <li>CA License C-30995</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2026 Prevision Design. All rights reserved.</span>
+          <span>Adam Phillips, Licensed Architect</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /page-frame -->
+
+  <script src="js/main.js"></script>
 </body>
 </html>
