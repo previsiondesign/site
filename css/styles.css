@@ -141,14 +141,14 @@ a:hover { color: var(--orange); }
   overflow: hidden;
 }
 
-/* Desktop: grow the hero so the stats bar lands on the fold and the next section
-   does not peek in. 264px is everything else above it — 32px frame margin, the
-   72px header, and the 160px stats bar (44px padding each side of a 72px grid) —
-   so `100vh - 264px` puts the stats bar's bottom edge exactly at the viewport's.
-   Clamped so a short laptop keeps today's 500px and a very tall screen does not
-   get an absurd hero. Only above 1024px: below that the stats grid wraps to two
-   rows and the 264 no longer holds. The headline block is anchored bottom-left,
-   so it keeps its offset from that corner as this grows. */
+/* Desktop: grow the hero so the stats bar very nearly fills the fold. 264px is
+   everything else above it — 32px frame margin, 72px header, the 144px stats bar
+   (36px padding each side of a 72px grid) — plus a deliberate 16px so a sliver of
+   the white section below shows rather than the dark band stopping dead on the
+   viewport edge. Clamped so a short laptop keeps today's 500px and a very tall
+   screen does not get an absurd hero. Only above 1024px: below that the stats
+   grid wraps to two rows and the 264 no longer holds. The headline block is
+   anchored bottom-left, so it keeps its offset from that corner as this grows. */
 @media (min-width: 1025px) {
   .hero { height: clamp(500px, calc(100vh - 264px), 940px); }
 }
@@ -350,7 +350,9 @@ a:hover { color: var(--orange); }
 /* ---- STATS BAR ---- */
 .stats-bar {
   background: var(--blue);
-  padding: 44px 0;
+  /* 36, not 44: trimming the band 16px lets a sliver of the white section below
+     show at the fold, rather than the dark band ending flush with the viewport. */
+  padding: 36px 0;
 }
 
 /* Slot for the hero buttons at ≤768px; stays out of the way above that. */
