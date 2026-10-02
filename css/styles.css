@@ -667,7 +667,11 @@ section { padding: 72px 0; }
    ≤768px the photo shrinks and only the name sits next to it. */
 .about-preview {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  /* 284px, not 260: sized so the photo's bottom edge lands on the bottom of the
+     Get in Touch button. Widening the column also shifts the text right, which is
+     the intent — the photo is square, so its height and the text indent move
+     together. */
+  grid-template-columns: 284px 1fr;
   grid-template-areas:
     "photo head"
     "photo text";
@@ -683,6 +687,10 @@ section { padding: 72px 0; }
   border-radius: 8px;
   overflow: hidden;
   align-self: start;
+  /* The grid row starts at the h3's box top, but its glyphs start 6px lower —
+     nudge down so the photo's top edge lines up with the top of "Adam Phillips"
+     as drawn, not with the invisible line box. */
+  margin-top: 6px;
 }
 
 .about-photo img {
@@ -1117,6 +1125,7 @@ section { padding: 72px 0; }
     align-items: center;
   }
 
+  .about-photo { margin-top: 0; }   /* centred against the name here */
   .about-head h3 { margin-bottom: 4px; }
   .about-head .title { margin-bottom: 0; font-size: 13px; line-height: 1.45; }
 
