@@ -217,9 +217,11 @@ a:hover { color: var(--orange); }
 }
 
 .hero-serie.is-active { animation-play-state: running; }
-.hero-serie:nth-child(2) { animation-name: kb-drift-b; }
-.hero-serie:nth-child(4) { animation-name: kb-drift-c; }
-.hero-serie:nth-child(5) { animation-name: kb-drift-d; }
+/* by class, not :nth-child — position-based selectors shifted every series'
+   drift whenever one was hidden or added */
+.hero-serie.kb-b { animation-name: kb-drift-b; }
+.hero-serie.kb-c { animation-name: kb-drift-c; }
+.hero-serie.kb-d { animation-name: kb-drift-d; }
 .hero-serie.is-video { animation: none; }   /* the footage already moves */
 
 @keyframes kb-drift-a {   /* push in, drifting right and down */
@@ -1217,3 +1219,24 @@ section { padding: 72px 0; }
 .logo-text { font-weight: 400; letter-spacing: -0.02em; }
 .logo-text .vis { font-weight: 600; }
 .logo-text .lt2 { font-weight: 400; }
+
+/* ---- FEATURED WORK: centre a short last row ----
+   With a project withheld (or any count that isn't a multiple of the row
+   length) the last row used to leave a hole on the right. The grid runs on
+   half-columns so a short row can start half a card in; each card spans two,
+   which keeps card widths exactly what they were. `of .project-card` counts
+   only real cards — the mockup keeps withheld ones in a <template> inside the
+   grid, which plain :nth-child would count. Kept at the end of the file so it
+   wins over the breakpoint rules above. */
+@media (min-width: 1025px) {
+  .projects-grid { grid-template-columns: repeat(6, 1fr); }
+  .project-card { grid-column: span 2; }
+  .project-card:nth-child(3n+1 of .project-card):nth-last-child(2 of .project-card) { grid-column: 2 / span 2; }
+  .project-card:nth-child(3n+1 of .project-card):nth-last-child(1 of .project-card) { grid-column: 3 / span 2; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(4, 1fr); }
+  .project-card { grid-column: span 2; }
+  .project-card:nth-child(2n+1 of .project-card):nth-last-child(1 of .project-card) { grid-column: 2 / span 2; }
+}
