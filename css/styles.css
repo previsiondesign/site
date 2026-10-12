@@ -1240,3 +1240,15 @@ section { padding: 72px 0; }
   .project-card { grid-column: span 2; }
   .project-card:nth-child(2n+1 of .project-card):nth-last-child(1 of .project-card) { grid-column: 2 / span 2; }
 }
+
+/* Exactly four cards: two across, so they form an even 2x2 rather than 3 + 1.
+   Keyed on the count, so it switches itself off when withheld cards return.
+   (Only needed on desktop — 769-1024px is already two across.) */
+@media (min-width: 1025px) {
+  .projects-grid:has(> .project-card:nth-child(4 of .project-card):nth-last-child(1 of .project-card)) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .projects-grid:has(> .project-card:nth-child(4 of .project-card):nth-last-child(1 of .project-card)) > .project-card {
+    grid-column: span 2;
+  }
+}
